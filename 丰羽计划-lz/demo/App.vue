@@ -10,20 +10,21 @@
            :defaultSort="defaultSort"
            :pagesize="pagesize"
            :colums="colums"
+	<Pagination :total="tableData.length" />
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Table } from '../src/table'
-// import { Pagination } from '../src/pagination/index.vue'
+import { Pagination } from '../src/pagination/index.vue'
 import { defineComponent, reactive, ref } from '@vue/composition-api'
 
 export default defineComponent({
   name: 'App',
   components: {
     Table,
-    // Pagination,
+    Pagination,
   },
   setup() {
     const pagesize =  ref('1')
