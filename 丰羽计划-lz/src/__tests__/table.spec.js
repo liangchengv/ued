@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
-import { TestTable } from '../table'
+import { Table } from '../table'
 
 describe('Table', () => {
-  const TableMount = options => mount(TestTable, options)
+  const TableMount = options => mount(Table, options)
 
   test('render', () => {
     const wrapper = TableMount()

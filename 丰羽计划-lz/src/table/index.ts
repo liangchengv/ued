@@ -2,6 +2,6 @@
  * Created by uedc on 2021/10/11.
  */
 
-import TestTable from './Table.vue'
+import Table from './Table.vue'
 
-export { TestTable }
+export { Table }

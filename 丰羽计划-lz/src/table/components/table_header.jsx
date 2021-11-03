@@ -1,31 +1,67 @@
 
-import { defineComponent, reactive } from '@vue/composition-api'
-import useSort from '../hooks/useSort'
-function getSortStatus(sort, name) {
-    const cls = sort.field === sort? 'sortable asc': 'desc';
-    return isShowSort ? `<div class="">${cls}</div>` : ''
+import { defineComponent, reactive, ref } from '@vue/composition-api'
+import { sortAutoType } from '../const'
 
+/**
+ * 获取排序状态class
+ * @param {*} sort 
+ * @param {*} field 
+ * @returns 
+ */
+function getSortStatus(sort, field) {
+  const cls = field === sort? 'sortable asc': 'desc'
+  return sort ? `<div class="">${cls}</div>` : ''
 }
+
 export default defineComponent({
-  props: ['colums'],
-  setup (props) {
+  props: ['colums', 'tableData'],
+  setup (props, { emit }) {
     const columsRow = reactive(props.colums)
+    const clickAbort = reactive({
+      sortIndex: 0,
+      click: 1,
+    })
+    const length = sortAutoType.length;
+    const sortType = sortAutoType[clickAbort.click];
+
+    const sortData = (index) => {
+      
+      // 记录点击当前排序状态
+      clickAbort.click = clickAbort.sortIndex === index ? clickAbort.click % length : 1;
+      clickAbort.sortIndex = index;
+      clickAbort.click++;
+
+      console.log(`当前表格列排序方式为${sortType}`)
+
+      emit('sortdata', sortType, index);
+    }
+
     return {
+      sortData,
       columsRow,
+      sortType,
     }
   },
   render () {
-      const sort = getSortStatus(this.sort, this.name);
-      const onClickSort = (index) => {
-        this.defaultSort ? useSort(col.field, columsRow, index) : '';
+    const sort = getSortStatus(canSort, field);
+
+    const onClickSort = (canSort, index)  => {
+      if(!canSort) {
+        console.log('当前表格列不允许排序')
+        return;
       }
-    const row = this.columsRow.map((groupColum, index) => {
-      return <td onClick={onClickSort(index)}>{groupColum.field}{sort} </td>
-    })
+      this.sortData(canSort, index)
+    }
+
     return (
       <thead>
         <tr>
-          {row}
+          {this.columsRow.map((groupColum, index) => {
+            return <td onClick={
+              () => onClickSort(groupColum.sortAble, index)
+            }>{groupColum.field}{() => sort(groupColum.sortAble, groupColum.field)}</td>
+          })
+          }
         </tr>
       </thead>
     )

@@ -1,36 +1,33 @@
 <template>
   <div>
     <!-- 基础展示组件 -->
-    <TestTable :tableData="tableData"
-               :defaultSort="defaultSort"
-               :colums="colums"
+    <Table :tableData="tableData"
+           :defaultSort="defaultSort"
+           :colums="colums"
     />
     <!-- 带分页条的表格 -->
-    <TestTable :tableData="tableData"
-               :defaultSort="defaultSort"
-               :pagesize="pagesize"
-               :colums="colums" />
-    <Pagination :dataDatanum="tableData.length"
-                dataCur="1"
-                @changePage="onChangePage"
-    ></Pagination>
+    <Table :tableData="tableData"
+           :defaultSort="defaultSort"
+           :pagesize="pagesize"
+           :colums="colums"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { TestTable } from '../src/table'
-import { Pagination } from '../src/pagination'
-import { defineComponent, reactive } from '@vue/composition-api'
+import { Table } from '../src/table'
+// import { Pagination } from '../src/pagination/index.vue'
+import { defineComponent, reactive, ref } from '@vue/composition-api'
 
 export default defineComponent({
   name: 'App',
   components: {
-    TestTable,
-    Pagination,
+    Table,
+    // Pagination,
   },
   setup() {
-    const pagesize =  ref('1');
-    const onChangePage = (value) => {
+    const pagesize =  ref('1')
+    const onChangePage = value => {
       pagesize.value = value
     }
     const defaultSort = reactive({
@@ -78,12 +75,12 @@ export default defineComponent({
       },
     ])
 
-    return { 
+    return {
       tableData,
-      colums, 
+      colums,
       defaultSort,
       onChangePage,
-      pagesize
+      pagesize,
     }
   },
 })

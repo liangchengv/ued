@@ -9,24 +9,24 @@
         <!-- 点击上一页 -->
         <a @click="cur--, pageClick()"> prev </a>
       </li>
-      <li v-if="cur == 1" class="prev-next">
+      <li v-if="cur === 1" class="prev-next">
         <!-- 点击第一页时显示 -->
         <a class="banclick"> prev </a>
       </li>
       <li
         class="li_a"
         v-for="index in indexs"
-        :key="'li' + index"
-        :class="{ active: cur == index }"
+        :key="`li${index}`"
+        :class="{ active: cur === index }"
       >
         <!-- 页码 -->
-        <a v-on:click="btnClick(index)"> {{ index }}</a>
+        <a @click="btnClick(index)"> {{ index }}</a>
       </li>
       <li v-if="cur != all" class="prev-next">
         <!-- 点击下一页 -->
-        <a v-on:click="cur++, pageClick()"> next </a>
+        <a @click="cur++, pageClick()"> next </a>
       </li>
-      <li v-if="cur == all" class="prev-next">
+      <li v-if="cur === all" class="prev-next">
         <!-- 点击最后一页时显示 -->
         <a class="banclick"> next </a>
       </li>
@@ -48,6 +48,7 @@
 </template>
 <script>
 import {PropType,ref,computed,reactive,toRefs} from '@vue/composition-api'
+import { usePagination } from '../hooks/usePagination'
 import {  tableProps } from './types'
 export default defineComponent({
   name: "Pagination",
@@ -67,18 +68,18 @@ export default defineComponent({
         Math.ceil(dataNuml / num)
       })
     });
+
+    const { changePagin } = usePagination()
  
     const btnClick = (val) => { 
       if (val != data.cur) 
       {
         data.cur = val
-        content.emit('changePage', data.cur);
+        changePagin(data.cur)
       }
     };
     
-    const pageClick = () => {
-      content.emit('changePage', data.cur)
-    }
+    const pageClick = () => changePagin(data.cur)
  
     /**
      * 跳至 xxx 页
@@ -89,7 +90,7 @@ export default defineComponent({
         console.error('参数错误');
         return;
       }
-      content.emit('changePage', data.jumpPage)
+      changePagin(data.jumpPage)
     }
     const dataRef = toRefs(data);
     return {
