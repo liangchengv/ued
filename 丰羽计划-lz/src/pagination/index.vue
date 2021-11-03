@@ -22,7 +22,7 @@
         <!-- 页码 -->
         <a @click="btnClick(index)"> {{ index }}</a>
       </li>
-      <li v-if="cur != all" class="prev-next">
+      <li v-if="cur !== all" class="prev-next">
         <!-- 点击下一页 -->
         <a @click="cur++, pageClick()"> next </a>
       </li>
@@ -72,7 +72,7 @@ export default defineComponent({
     const { changePagin } = usePagination()
  
     const btnClick = (val) => { 
-      if (val != data.cur) 
+      if (val !== data.cur) 
       {
         data.cur = val
         changePagin(data.cur)
