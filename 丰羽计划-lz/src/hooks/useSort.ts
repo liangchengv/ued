@@ -2,27 +2,26 @@ import { ref } from '@vue/composition-api'
 
 import { sortAutoType } from '../table/const'
 
-export function useSort(columsRow, order: sortAutoType, index: Number) {
-  const columns = ref([]);
-  const tableData = ref([]);
+/**
+ * 点击排序运行函数
+ * @param type 排序方式（正序，倒序）
+ * @param index 排序列索引
+ * @param columsRow 排序的表格props
+ * @returns 排序完成的字段
+ */
+export function useSort(type: sortAutoType, index: number, columsRow) {
+  console.log('点击了排序')
 
-  // 没有排序字段的按照不排序展示
-  columns.value.forEach((col) => {
-    col.sortType = sortAutoType.normal;
-  });
+  const sortTableData = ref([])
+  const key: string = columsRow.colums[index].field
 
-  columns.value[index].sortType = order;
-  let key: string = columns.value[index].key;
-  if (order === sortAutoType.normal) {
-    tableData.value = columsRow;
-    return;
-  }
+  const indexSort = type === sortAutoType.asc ? 1 : -1
 
-  const indexSort = order === sortAutoType.asc ? 1 : -1;
-  tableData.value.sort((a, b) => indexSort * (a[key] - b[key]));
+  sortTableData.value = columsRow.tableData.sort((a, b) => indexSort * (a[key] - b[key]))
+
+  console.log(`排序后的表格列${sortTableData.value}`)
 
   return {
-    columns,
-    tableData
+    sortTableData,
   }
 }

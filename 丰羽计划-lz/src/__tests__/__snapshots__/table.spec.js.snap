@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`表格 表格渲染测试 1`] = `
+"<section class=\\"mod-com_table\\">
+  <thead>
+    <tr></tr>
+  </thead>
+  <tbody></tbody>
+</section>"
+`;

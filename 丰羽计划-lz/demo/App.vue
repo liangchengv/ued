@@ -1,34 +1,39 @@
 <template>
   <div>
     <!-- 基础展示组件 -->
-    <Table :tableData="tableData"
+    <!-- <Table :tableData="tableData"
            :defaultSort="defaultSort"
            :colums="colums"
-    />
+    /> -->
     <!-- 带分页条的表格 -->
     <Table :tableData="tableData"
            :defaultSort="defaultSort"
            :pagesize="pagesize"
            :colums="colums"
-	<Pagination :total="tableData.length" />
+    />
+    <v-pagination :dataDatanum="tableData.length"
+                  :cur="1"
+                  :dataAll="2"
+                  :dataCur="2"
+                  @changePage="onChangePage"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Table } from '../src/table'
-import { Pagination } from '../src/pagination/index.vue'
+import { VPagination } from '../src/pagination'
 import { defineComponent, reactive, ref } from '@vue/composition-api'
 
 export default defineComponent({
   name: 'App',
   components: {
     Table,
-    Pagination,
+    VPagination,
   },
   setup() {
     const pagesize =  ref('1')
-    const onChangePage = value => {
+    const onChangePage = (value: string) => {
       pagesize.value = value
     }
     const defaultSort = reactive({
@@ -37,22 +42,22 @@ export default defineComponent({
     })
     const tableData = reactive([
       {
-        date: '2016-05-03',
-        name: 'Tom',
+        date: '3',
+        name: 'Tomjopjopgreg',
         address: 'No. 189, Grove St, Los Angeles',
       },
       {
-        date: '2016-05-02',
-        name: 'Tom',
+        date: '8',
+        name: 'Togkreopgkperokgem',
         address: 'No. 189, Grove St, Los Angeles',
       },
       {
-        date: '2016-05-04',
-        name: 'Tom',
+        date: '23',
+        name: 'Tomgreg',
         address: 'No. 189, Grove St, Los Angeles',
       },
       {
-        date: '2016-05-01',
+        date: '1',
         name: 'Tom',
         address: 'No. 189, Grove St, Los Angeles',
       },
@@ -63,6 +68,7 @@ export default defineComponent({
         key: 'a',
         field: 'date',
         title: '参数',
+        sortAble: true,
       },
       {
         key: 'b',
